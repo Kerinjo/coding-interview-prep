@@ -1,3 +1,4 @@
+
 public class Solution {
     public (int, int) GetComplements(int value, int[] nums) {
         // in: value
@@ -16,40 +17,58 @@ public class Solution {
             }
             seenNumbers.Add(num);
         }
-
         return (0,0);
-
     } 
     
     public IList<IList<int>> ThreeSum(int[] nums) {
-        // integer array as input
-        // [-1, 0, 1, 2, -1, 4]
-
-        // return ALL triplets that:
-        // don't equal to each other AND
-        // sum up to 0!
-
-        // repeat for each elem:
-        // look at one -> i
-        // find two that sum up to -i 
+        IList<IList<int>> nestedList = new List<IList<int>>();
 
         for (int i = 0; i < nums.Length; i++) {
-            // Write CounterElems
-            var complements = GetComplements(nums[i], nums);
+            HashSet<int> seenNumbers = new HashSet<int>();
+            int target = -nums[i];
+            for (int j = 0; j < nums.Length; j++)
+            {
+                if (j != i) {
+                    int complement = target - nums[j];
+                    if (seenNumbers.Contains(complement)) {
+                        System.Console.WriteLine(
+                            $"FOUND: {nums[i]}, {nums[j]}, {complement}"
+                        );
+                        List<int> result = new List<int>(){nums[i], nums[j], complement};
 
-            Console.Write($"[{nums[i]}, {complements.Item1}, {complements.Item2}]");           
+                        System.Console.WriteLine(nestedList.Count);
+                        if (nestedList.Count == 0)
+                            nestedList.Add(result);
+
+                        foreach (List<int> item in nestedList)
+                        {
+                            if(item.ToHashSet().SetEquals(result.ToHashSet()))
+                            {
+                                System.Console.WriteLine("Added to list");
+                                nestedList.Add(result);
+                                break;
+                            }
+                        }
+                    }
+                    seenNumbers.Add(nums[j]);
+                }
+            }
+        }
+        // //     // Write CounterElems
+
+
+                        
+        // IList<int> results = new List<int>(){nums[i], complements.Item1, complements.Item2};
             
-            
-
-
-            Console.WriteLine();
-        } 
-
-
-
-
-        // array of arrays as output
-        IList<IList<int>> nestedList = new List<IList<int>>();
+        //     bool addFlag = true;
+        //     foreach (List<int> item in nestedList)
+        //     {
+        //         if (item.ToHashSet().SetEquals(results.ToHashSet()))
+        //             addFlag = false;
+        //     }
+        //     if (addFlag)
+        //         nestedList.Add(results);
+        // } 
         return nestedList;
     }
 }
